@@ -1,0 +1,85 @@
+<h1>template driven form</h1>
+<!--this is a example of the form basically therE are two forms one is this -->
+<!--in angular if you use form it will take basically as ngform -->
+<!-- to use the details u need name a form using # and u need to give = ngForm to carry the datas and we are here keeping a listener here as submit and sending the parameter the name we kept for #-->
+<form class="container" #templateform="ngForm" (submit)="onsubmit(lastname)" ngNativeValidate> <!--the whole form is taken as a formgroup-->
+ <!--instead of keeping like this we can make if any of the property doesnt filled then we can disable the submit button -->
+ <!--if you wanna see the icons what we have used here then we can send in onsubmit(firstname) the template name for submit listener -->
+    <p>
+        <label for="firstname">Firstname  </label>
+        <!-- if we need to access the errors in input we are creating a template variable which contains the form control power so that we can able to access the 
+        valid property of it by using ngModel control property to it -->
+        <input type="text" name="firstname" #firstname="ngModel" [(ngModel)]="contact.firstname" required minlength="10">   <!--here we are setting the form controls as by using ngModel-->
+        <!--even if you have required there the ngform defaultly sets the form in the novalidate type which we give in html
+        to overcome that we need to give ngNativeVaidate in the upper above form 
+    after that also the error message doesnt seen but if you remove bootstrap you can able to see -->
+    <span *ngIf="!firstname.valid && (firstname.touched || firstname.dirty)" [ngStyle]="{'color':'red'} ">
+        <!--here we are setting the error message as if the field doesnt filled then the error message will be arised-->
+        <!-- the firstname.touched will give the if the input box was ticked it would give true else it will be false-->
+        <!--the firstname.dirty will be as if the icon is touched and typed then the following will occur-->
+        <span *ngIf="firstname.errors?.['required']" class="text-danger">
+            Firstname is required
+        </span>
+        <!--there will be a errors property in which if all the category what we give matches means it will be null so we need to give ? before it 
+         so why we can able to do that-->
+        <span *ngIf="firstname.errors?.['minlength']" class="text-danger">
+            minimum length is ten
+        </span>
+    
+    </span>
+    </p>
+    <p>
+        <label for="lastname">Lastname </label>
+        <!--we can also able to do check the pattern like this and for rest of them also we can do like that-->
+        <input type="text" name="lastname" #lastname="ngModel" [(ngModel)]="contact.lastname" required maxlength="10" pattern="^[a-zA-Z]+$">
+        <span *ngIf="!lastname.valid && (lastname.touched || lastname.dirty)" [ngStyle]="{'color':'red'} ">
+        
+            <span *ngIf="lastname.errors?.['required']" class="text-danger">
+              lastname is required
+            </span>
+            <span *ngIf="lastname.errors?.['maxlength']" class="text-danger">
+                maximum length is ten
+            </span>
+            <span *ngIf="lastname.errors?.['pattern']" class="text-danger">
+              following pattern doesnt match
+            </span>
+        </span>
+    </p>
+    <p>
+        <label for="Gender">Gender </label>
+        <!--for radio typed input we need to give value based on that only we can use it in angular-->
+        <input type="radio" value="male" id="male" name="gender" [(ngModel)]="contact.gender">Male
+        <input type="radio" value="female" id="female" name="gender" [(ngModel)]="contact.gender">Female
+
+    </p>
+    <p>
+        <label for="phoneno">Phone.No </label>
+        <input type="text" id="phoneno" name="phoneno" [(ngModel)]="contact.phoneno">
+    </p>
+    <p>
+        <label for="married">Married </label>
+        <input type="checkbox" id="marriedstatus" name="marriedstatus" [(ngModel)]="contact.marriedstatus">
+    </p>
+    <p>
+        <label for="country">Country </label>
+       <select name="country" id="country" [(ngModel)]="contact.countri">
+        <option value="">select</option>
+        <!--the parameter [ngValue] will be used for using the id in the value field -->
+        <option [ngValue]="country.id" *ngFor="let country of Country">{{country.name}}</option>
+       </select>
+    </p>
+    <!--this is one form group if you want to use other form group-->
+    <div ngModelGroup="address">   <!--by keeping like this we are informing the angular that this is a another form group-->
+       <p>
+        <label for="city">city: </label>
+        <input type="text" name="city" id="city"[(ngModel)]="contact.address.city">
+       </p>
+       <p>
+        <label for="pincode">pincode: </label>
+        <input type="text" name="pincode" id="pincode" [(ngModel)]="contact.address.pincode">
+       </p>
+    </div>
+    
+    <input type="submit" id="submit" [disabled]="templateform.valid">
+    <!--like this if we keep means if any of the field doesnt have filled then it will be not visible-->
+</form>

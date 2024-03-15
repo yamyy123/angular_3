@@ -1,0 +1,93 @@
+<p>reactive-forms works!</p>
+
+<!--to use the formgroup declared in component to use in html we need to use a [formGroup] ="" the name of the formgroup we have declared there and -->
+
+<form [formGroup]="contactForm" (submit)="onsubmit()">
+    <label for="username">Username:</label>
+    <input type="text" id="username"  name="username" required formControlName="username">
+    <br>
+    <!--below we need qestion mark because we have shortened the calling name with using get class 
+    so there will be a possibility of null if no field names present inside so here we gonna use ? see below as we reduced the names-->
+    <span *ngIf="!username?.valid && (contactForm.controls.username.touched || contactForm.controls.username.dirty)" class="text-danger">
+    <span *ngIf="username?.errors?.['required']">
+      username is required
+    </span>
+    <span *ngIf="username?.errors?.['minlength']">
+    we need minimum 6 characters
+    </span>
+    </span>
+    <!--if we wanna chck for the controls field for errors-->
+    <br><br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required formControlName="password">
+
+    <span *ngIf="!password?.valid && (password?.touched || password?.dirty)" class="text-danger">
+      <span *ngIf="password?.errors?.['required']">
+        password is required
+      </span>
+      <span *ngIf="password?.errors?.['minlength']">
+      we need minimum 6 characters
+      </span>
+      <span *ngIf="password?.errors?.['pattern']">
+     type only characters
+        </span>
+      </span>
+
+    <br><br>
+    <label for="country">Country:</label>
+    <select id="country" name="country" required formControlName="country">
+      <option value="">Select a country</option>
+      <option value="usa">USA</option>
+      <option value="uk">UK</option>
+      <option value="india">India</option>
+    </select>
+
+    <span *ngIf="!country?.valid && (country?.touched || country?.dirty)" class="text-danger">
+      <span *ngIf="country?.errors?.['required']">
+        country is required
+      </span>
+     </span>
+
+    <br><br>
+    <label>Gender:</label>
+    <input type="radio" id="male" name="gender" value="male" formControlName="gender">
+    <label for="male">Male</label>
+    <input type="radio" id="female" name="gender" value="female" formControlName="gender">
+    <label for="female">Female</label>
+    <input type="radio" id="other" name="gender" value="other" formControlName="gender">
+    <label for="other">Other</label>
+    <span *ngIf="!gender?.valid && (gender?.touched || gender?.dirty)" class="text-danger">
+      <span *ngIf="gender?.errors?.['required']">
+        gender is required
+      </span>
+     </span>
+    <br><br>
+    <label for="married">Married:</label>
+    <input type="checkbox" id="married" name="married" formControlName="married">
+    <span *ngIf="!married?.valid && (married?.touched || married?.dirty)" class="text-danger">
+      <span *ngIf="married?.errors?.['required']">
+        married is required
+      </span>
+     </span>
+    <br><br>
+    <!--if we need to add formgroup nested we need to give it as formgroupname-->
+    <div formGroupName="address">
+    <label for="city">city</label>
+    <input type="text" id="city" name="city" formControlName="city">
+    <span *ngIf="!city?.valid && (city?.touched || city?.dirty)" class="text-danger">
+      <span *ngIf="city?.errors?.['required']">
+        city is required
+      </span>
+     </span>
+    <br><br>
+    <label for="pincode">pincode</label>
+    <input type="text" id="pincode" name="pincode" formControlName="pincode">
+    <span *ngIf="!pincode?.valid && (pincode?.touched || pincode?.dirty)" class="text-danger">
+      <span *ngIf="pincode?.errors?.['required']">
+        pincode is required
+      </span>
+     </span>
+  </div>
+  <br><br>
+    <button type="submit" [disabled]="!contactForm.valid">Submit</button>
+  </form>
